@@ -11,11 +11,11 @@ local sessionName = args[2]
 -- Design stuff
 
 local help = [[
-╔═══════════════════════╦════════════════════════════════════════════════════════╗
-║   Session Idea Help   ║                                                        ║
-╠════════════╤══════════╝                                                        ║
+╔═════════════════════════╦══════════════════════════════════════════════════════╗
+║   Session System Help   ║                                                      ║
+╠════════════╤════════════╝                                                      ║
 ║ --help     ┆ Shows this fancy looking thing with box-drawing characters.       ║
-║ --new	     ┆ Creates a new session with the help of the given session name.    ║
+║ --new      ┆ Creates a new session with the help of the given session name.    ║
 ║ --switch   ┆ Switches to another session given by a name.                      ║
 ║ --save     ┆ Saves the current given settings to the current session_info file ║
 ║ --me       ┆ Shows the name given to your current session.                     ║

@@ -6,6 +6,7 @@ local args = ...
 local sessionName = args[2]
 
 if sessionName == nil then print("[!] Session Name Empty!") return nil end
+if sessionName == "default" then print("[!] Name 'default' is reserved!") return nil end
 
 local input0 = console.getInput("Session Name")
 
