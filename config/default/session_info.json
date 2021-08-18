@@ -1,10 +1,9 @@
 {
-    "name": "DefaultSession",
-    "password": null,
-    "perms": "0",
-    "color": {
-        "red": 128,
-        "green": 0,
-        "blue": 51
-    }
+  "color": {
+    "blue": "25",
+    "green": "100",
+    "red": "100"
+  },
+  "name": "GalaxyBrainIQ",
+  "perms": "0"
 }

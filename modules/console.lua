@@ -1,3 +1,5 @@
+local cfg = require("modules/config")
+
 local console = {
     _version = "0.9.0"
 }
@@ -12,6 +14,11 @@ function console.set24(r, g, b)
     print(string.char(27).."[38;2;" ..r..";" ..g.. ";" ..b.. "m")
 end
 
+function console.reload24()
+    console.set24(tonumber(cfg["cfg"]["color"]["red"]), tonumber(cfg["cfg"]["color"]["green"]), tonumber(cfg["cfg"]["color"]["blue"]))
+    console.clearTerm()
+end
+
 -- Custom Inputs for variable detection
 
 function console.yesno(question)
@@ -24,6 +31,12 @@ function console.yesno(question)
     else
         return false
     end
+end
+
+function console.getInput(sentence)
+    io.write(sentence.." > ")
+    local Cinput = io.read()
+    return Cinput
 end
 
 -- Functions for useability cases

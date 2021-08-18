@@ -21,6 +21,16 @@ end
 
 -- Functions that go outside as module functions.
 
+function file.isDir(dir)
+    if os.execute('[ -e "'..dir..'" ]')then
+        if os.execute('[ -d "'..dir..'" ]')then
+            return true
+        end
+        return false
+    end
+    return false
+end
+
 function file.read(filepath)
     raw_data = io.open("./"..filepath, "r")
     -- Check if it could open the file
@@ -32,8 +42,15 @@ function file.read(filepath)
     return string
 end
 
-function file.write(filepath)
+function file.write(filepath, data)
+    file = io.open("./"..filepath, "w")
+    -- check if file and data exist.
+    if not file then return nil end
+    if not data then return nil end
+    file:write(data)
+    file:close()
 
+    return true
 end
 
 function file.jsonRead(filepath)
@@ -50,8 +67,17 @@ function file.jsonRead(filepath)
     return data_table
 end
 
-function file.jsonWrite(filepath)
+function file.jsonWrite(filepath, tableData)
+    file = io.open("./"..filepath, "w")
+    -- check if file and data exist.
+    if not file then return nil end
+    if not tableData then return nil end
+    
+    dataConvert = json:encode_pretty(tableData, nil, { pretty = true, indent = "  " })
+    file:write(dataConvert)
+    file:close()
 
+    return true
 end
 
 return file

@@ -18,6 +18,7 @@ local defaultConfig = {
         red = 255,
     },
     name = "DEFAULT",
+    password = "",
     perms = "0"
 }
 
@@ -39,17 +40,32 @@ function configuration.loadDefault()
     end
 end
 
-function configuration.createNewConfiguration(session_name)
+function configuration.createNewConfiguration(session_name, session_user, password)
     if string.match(session_name, ";") then print("Arbitrary Code won't run here. Find a different entrance, nerd. <3") return 1 end
     if string.match(session_name, " ") then print("Session names cannot have spaces. try adding an underscore or a dash.") return 1 end
-    if string.match(session_name, "DEFAULT") then print("The word DEFAULT is reserved. Try using Default or default instead.") return 1 end
+    if string.match(session_name, "default") then print("The word default is reserved. Try using Default or DEFAULT instead.") return 1 end
     
     -- prepare the variables
     
+    newConfig = defaultConfig
+    
+    newConfig["name"] = session_user
+    if password ~= nil then
+        newConfig["password"] = password
+    end
+
+    -- Setup the space
 
     os.execute("mkdir ./config/"..session_name)
-    
+    file.jsonWrite("./config/"..session_name.."/session_info.json", newConfig)
 
+    return true
+end
+
+function configuration.overwriteConfiguration(session_name)
+    if file.isDir("./config/"..session_name) then        
+        if file.jsonWrite("./config/"..session_name.."/session_info.json", configuration["cfg"]) == nil then print("Couldn't write to that file, is not a session.") return nil else return "not nil" end
+    else print("Can't overwrite, create a new session before redoing") return nil end
 end
 
 function configuration.readConfiguration(session_name)
@@ -77,6 +93,9 @@ end
 function configuration.saveConfiguration(session_name)
     if not configuration.cfg ~= nil then print("The config value was empty or corrupted. Saving did not commence.") return false end
     if not configuration.aliases ~= nil then print("The aliases value was empty or corrupted. Saving did not commence.") return false end
+
+    
+
 end
 
 return configuration

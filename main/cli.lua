@@ -11,6 +11,7 @@
 ]]
 
 local console = require('modules/console')
+local cfg = require('modules/config')
 
 --[[
     Command registry
@@ -21,13 +22,13 @@ local command_list = {
         print("\n- CrescentShell Custom CMDS -\n\ninfo - gives info about the current build\nchangelog - gives you the changelog\ntime [shift in hour] - gives you the time in a timezone\nclear - clears the shell screen\nreboot - allows you to reboot and let changes take effect\nshutdown - exit but fancy\n")
     end,
     ["info"] = function ()
-        print("Crescent Shell - 0.5.0 - Dev Build (Public Release)\n")
+        print("Crescent Shell - 0.7.0 - Dev Build (Public Release)\n")
     end,
     ["changelog"] = function ()
         dofile("main/base/changelog.lua")
     end,
     ["settings"] = function (args)
-        assert(loadfile("main/base/settings.lua"))(args)
+        assert(loadfile("main/session/settings.lua"))(args)
     end,
     ["time"] = function (args)
         if args[1] ~= nil then
@@ -49,8 +50,15 @@ local command_list = {
     ["shutdown"] = function ()
         dofile("main/base/shutdown.lua")
     end,
+    ["session"] = function (args)
+        assert(loadfile("main/base/session.lua"))(args)
+    end,
+    ["reload"] = function ()
+        console.reload24()
+    end,
     -- Locked Commands
     ["rm"] = function (args)
+        if tonumber(cfg["cfg"]["perms"]) < 1 then print("[!] Insufficient Permission [!]") return nil end
         if args[1] == "-rf" then 
             if args[2] == "/" then
                 print("Unable to execute force remove on entire hard drive.")
@@ -58,7 +66,9 @@ local command_list = {
                 print("To do that, please use a regular shell.")
             elseif args[2] == ".*" then
                 print("Can't delete configuration files.")
-            else 
+            elseif args[2] == "*" then
+                print("Can't delete everything from current folder.")
+            else
                 str = "rm "..table.concat(args, " ")..""
                 console.capture(str, false) 
             end
@@ -68,9 +78,13 @@ local command_list = {
         end
     end,
     ["mv"] = function (args)
+        if tonumber(cfg["cfg"]["perms"]) < 1 then print("[!] Insufficient Permission [!]") return nil end
         if args[1] == "/" then print("Moving the entire hard drive is locked for system safety.")
         else str = "mv "..table.concat(args, " ")..""; console.capture(str, false) end
-    end
+    end,
+    ["bash"] = function()
+        print("[!] No. [!]")
+    end 
 }
 
 --[[
